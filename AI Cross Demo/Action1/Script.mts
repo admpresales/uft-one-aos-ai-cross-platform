@@ -127,9 +127,15 @@ Function Logout
 	End  If
 	
 End Function
-	
-	set oContext=LaunchEnvironment
-	AIUtil.SetContext oContext 	
-	Login
-	Logout
+
+Dim oShell
+
+Set oShell = CreateObject ("WSCript.shell")
+oShell.run "powershell -command ""Start-Service mediaserver"""
+Set oShell = Nothing
+
+set oContext=LaunchEnvironment
+AIUtil.SetContext oContext 	
+Login
+Logout
 	
