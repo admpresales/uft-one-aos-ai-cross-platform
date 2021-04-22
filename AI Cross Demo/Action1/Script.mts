@@ -59,24 +59,33 @@ Function Login
 	'	Login
 	'If mobile web, navigate to the URL
 		If DataTable.Value("app_identifier") = "MC.Browser" Then
-			AIUtil("text_box", "aboutzblank").Type "advantageonlineshopping.com/"
+			'Browser("CreationTime:=0").Navigate DataTable.Value("URL")
+			AIUtil("text_box").Type DataTable.Value("URL")
+			AIUtil.FindText(DataTable.Value("URL"), micFromTop, 1).Click
 			'AIUtil.FindTextBlock("advantageonlineshopping.com").Click
-			AIUtil.FindTextBlock("advantageonlineshopping.com", micFromTop, 1).Click
+			'AIUtil.FindTextBlock("advantageonlineshopping.com", micFromTop, 1).Click
 			rc = AIUtil.FindTextBlock("SPEAKERS").Exist(10)
 		End If
 	
 	'Click the hamburger if it exists
 	'# Feature AIUtil SDK Usage
-		if  AIUtil("hamburger_menu").exist(0) then AIUtil("hamburger_menu").Click
+		If DataTable.Value("Context") = "Device" Then
+			AIUtil("hamburger_menu").Click
+		End If
 	'Click the profile  icon
 	'# Feature Spy with AI enhancements'
 		'AIUtil("profile").Highlight
 		AIUtil("profile").Click
 	'# Feature AI Inspect on Desktop Browsers
 	'Set 'aidemo' into 'username' field 
+'		AIUtil("input", micAnyText, micFromTop, 1).Highlight
+'		AIUtil("input", micAnyText, micFromTop, 1).Type "aidemo"
+'		AIUtil("input", micAnyText, micFromBottom, 1).Type "AIdemo1"
+
 		AIUtil("input", "Username").Highlight
 		AIUtil("input", "Username").Type "aidemo"
-		'AIUtil("input", "Username").Click			'If not https, Firefox throws a warning.
+		AIUtil.FindTextBlock("OR").Click
+		AIUtil("input", "Username").Click			'If not https, Firefox throws a warning.
 	'Set 'AIdemo1' into 'password' field
 		AIUtil("input", "Password").Type "AIdemo1"
 	'Click the login button
@@ -98,7 +107,9 @@ Function Logout
 	'========================================================================================================================
 	'	Logout
 	'# Feature AIUtil SDK Usage
+	If DataTable.Value("Context") = "Device" Then
 		if  AIUtil("hamburger_menu").exist(0) then AIUtil("hamburger_menu").Click
+	End  If
 	'Click the profile  icon
 	'# Feature Spy with AI enhancements'
 		AIUtil("profile").Click
@@ -120,7 +131,7 @@ Function Logout
 			End Select
 		End If
 		
-	If  AIUtil("hamburger_menu").exist(0) then 
+	If  DataTable.Value("Context") = "Device" then 
 		oDevice.CloseViewer
 	Else
 		Browser("CreationTime:=0").Close
@@ -139,3 +150,5 @@ AIUtil.SetContext oContext
 Login
 Logout
 	
+	
+
