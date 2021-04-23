@@ -85,11 +85,20 @@ Function Login
 		AIUtil("input", "Username").Highlight
 		AIUtil("input", "Username").Type "aidemo"
 		AIUtil.FindTextBlock("OR").Click
-		AIUtil("input", "Username").Click			'If not https, Firefox throws a warning.
 	'Set 'AIdemo1' into 'password' field
 		AIUtil("input", "Password").Type "AIdemo1"
 	'Click the login button
 		AIUtil("button", "SIGN IN").Click
+		
+	'Handle the biometrics question if it pops up
+	If DataTable.Value("Context") = "Device" Then
+		If AIUtil.FindText("BIOMETRIC").Exist(5) Then
+			AIUtil.FindText("NO").Click
+		End If	
+'		If AIUtil.FindText("Location Services").Exist(5) Then
+'			AIUtil.FindText("Cancel").Click
+'		End If
+	End If
 	
 	'Wait for the shopping cart button to show, doesn't show on screen for mobile web, sync on SPEAKERS text instead for mobile web
 		If DataTable.Value("app_identifier") = "MC.Browser" Then
